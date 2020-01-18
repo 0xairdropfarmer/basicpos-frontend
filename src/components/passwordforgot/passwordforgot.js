@@ -4,10 +4,12 @@ import * as Yup from "yup";
 import axios from "axios";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
+import Recaptcha from "react-recaptcha";
 const PasswordForgotSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email")
-    .required("Email is Required")
+    .required("Email is Required"),
+    recaptcha: Yup.string().required(),
 });
 
 class Passwordforgot extends Component {
@@ -73,7 +75,22 @@ class Passwordforgot extends Component {
             ) : null}
           </div>
         </div>
-        {/* /.card-body */}
+        <div className="form-group">
+        <label>Recaptcha Validation</label>
+          <Recaptcha
+            sitekey="6Le2nREUAAAAALYuOv7X9Fe3ysDmOmghtj0dbCKW"
+            render="explicit"
+            theme="light"
+            verifyCallback={response => {
+              setFieldValue("recaptcha", response);
+            }}
+            onloadCallback={() => {
+              console.log("done loading!");
+            }}
+          />
+          {errors.recaptcha && touched.recaptcha && <p>{errors.recaptcha}</p>}
+        </div>
+      
         <div class="row">
           <div class="col-12">
             <button
@@ -108,7 +125,8 @@ class Passwordforgot extends Component {
               </p>
               <Formik
                 initialValues={{
-                  email: ""
+                  email: "",
+                  recaptcha: ""
                 }}
                 onSubmit={(values, { setSubmitting }) => {
                   this.submitForm(values, this.props.history);
