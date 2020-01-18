@@ -48,7 +48,7 @@ export default class App extends Component {
             {isLoggedIn() && <Header />}
             {isLoggedIn() && <Sidebar />}
             <Route path="/register" component={Register} />
-            <Route path="/" component={Login} />
+            <Route path="/" exact component={Login} />
             <Route path="/login/:notify?" component={Login} />
             <Route path="/password/reset/:token" component={Passwordreset} />
             <Route path="/password/forgot" component={Passwordforgot} />

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import swal from "sweetalert";
 import { withRouter, Link } from "react-router-dom";
 class Header extends Component {
-  Logout = () => {
+  Logout = e => {
     swal("Are your sure SignOut?", {
       buttons: {
         nope: {
@@ -85,7 +85,7 @@ class Header extends Component {
               </Link>
               <div className="dropdown-divider" />
               <a
-                href="#"
+                href="javascript:;"
                 onClick={() => this.Logout()}
                 className="dropdown-item"
               >

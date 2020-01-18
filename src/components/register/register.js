@@ -29,7 +29,7 @@ class Register extends Component {
 
   submitForm = (values, history) => {
     axios
-      .post("http://localhost:8080/register", values)
+      .post(process.env.REACT_APP_API_URL+"register", values)
       .then(res => {
         console.log(res.data.result);
         if (res.data.result === "success") {
