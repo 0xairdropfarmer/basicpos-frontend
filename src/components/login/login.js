@@ -126,7 +126,7 @@ class Login extends Component {
         <div className="form-group">
           <label>Recaptcha Validation</label>
           <Recaptcha
-            sitekey="6Le2nREUAAAAALYuOv7X9Fe3ysDmOmghtj0dbCKW"
+            sitekey={process.env.REACT_APP_RECAPCHA_KEY}
             render="explicit"
             theme="light"
             verifyCallback={response => {

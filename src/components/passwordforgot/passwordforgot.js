@@ -9,7 +9,7 @@ const PasswordForgotSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email")
     .required("Email is Required"),
-    recaptcha: Yup.string().required(),
+  recaptcha: Yup.string().required()
 });
 
 class Passwordforgot extends Component {
@@ -25,7 +25,7 @@ class Passwordforgot extends Component {
 
   submitForm = async formData => {
     await axios
-      .post(process.env.REACT_APP_API_URL +"reset", formData)
+      .post(process.env.REACT_APP_API_URL + "reset", formData)
       .then(res => {
         console.log(res.data.result);
         if (res.data.result === "success") {
@@ -76,9 +76,9 @@ class Passwordforgot extends Component {
           </div>
         </div>
         <div className="form-group">
-        <label>Recaptcha Validation</label>
+          <label>Recaptcha Validation</label>
           <Recaptcha
-            sitekey="6Le2nREUAAAAALYuOv7X9Fe3ysDmOmghtj0dbCKW"
+            sitekey={process.env.REACT_APP_RECAPCHA_KEY}
             render="explicit"
             theme="light"
             verifyCallback={response => {
@@ -90,7 +90,7 @@ class Passwordforgot extends Component {
           />
           {errors.recaptcha && touched.recaptcha && <p>{errors.recaptcha}</p>}
         </div>
-      
+
         <div class="row">
           <div class="col-12">
             <button
@@ -137,13 +137,13 @@ class Passwordforgot extends Component {
                 {/* {this.showForm()}            */}
                 {props => this.showForm(props)}
               </Formik>
-                <p className="mb-0">
-                  <Link to="/login">Login</Link>
-                </p>
+              <p className="mb-0">
+                <Link to="/login">Login</Link>
+              </p>
 
-                <p className="mb-0">
-                  <Link to="/register">Register a new membership</Link>
-                </p>
+              <p className="mb-0">
+                <Link to="/register">Register a new membership</Link>
+              </p>
             </div>
             {/* /.login-card-body */}
           </div>
