@@ -25,7 +25,7 @@ axios.interceptors.response.use(
     // debugger;
     if (error.response.status == "401") {
       const refreshToken = localStorage.getItem(server.REFRESH_TOKEN_KEY);
-      const refreshUrl = `${apiUrl}/${server.REFRESH_TOKEN_URL}`;
+      const refreshUrl = `${process.env.REACT_APP_API_URL}/${server.REFRESH_TOKEN_URL}`;
       let result = await axios.post(refreshUrl, { refreshToken });
 
       const token = result.data.jwt;
