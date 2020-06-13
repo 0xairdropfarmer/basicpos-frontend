@@ -1,12 +1,12 @@
 import axios from "axios";
 import join from "url-join";
-import { server, apiUrl } from "../constants";
+import { server } from "../constants";
 
 const isAbsoluteURLRegex = /^(?:\w+:)\/\//;
 
 axios.interceptors.request.use(async (config) => {
   if (!isAbsoluteURLRegex.test(config.url)) {
-    config.url = join(apiUrl, config.url);
+    config.url = join(process.env.REACT_APP_API_URL, config.url);
   }
 
   const userToken = localStorage.getItem(server.TOKEN_KEY);
