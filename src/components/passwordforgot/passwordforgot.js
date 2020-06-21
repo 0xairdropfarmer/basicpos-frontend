@@ -1,47 +1,28 @@
-import React, { Component } from "react";
+import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
-import swal from "sweetalert";
 import { Link } from "react-router-dom";
 import Recaptcha from "react-recaptcha";
+import * as passwordForgotAction from "./../../actions/forgotpassword.action";
+import { useDispatch } from "react-redux";
 const PasswordForgotSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email")
-    .required("Email is Required"),
-  recaptcha: Yup.string().required()
+  email: Yup.string().email("Invalid email").required("Email is Required"),
+  recaptcha: Yup.string().required(),
 });
 
-class Passwordforgot extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      response: {},
-      error_message: null,
-      avatar: ""
-    };
-  }
-
-  submitForm = async formData => {
-    await axios
-      .post(process.env.REACT_APP_API_URL + "reset", formData)
-      .then(res => {
-        console.log(res.data.result);
-        if (res.data.result === "success") {
-          swal("Success!", res.data.message, "success").then(value => {
-            //s window.location.reload();
-          });
-        } else if (res.data.result === "error") {
-          swal("Error!", res.data.message, "error");
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        swal("Error!", "Unexpected error", "error");
-      });
+export default (props) => {
+  const dispatch = useDispatch();
+  const initilizeRecaptcha = async () => {
+    const script = document.createElement("script");
+    script.src = "https://www.google.com/recaptcha/api.js";
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
   };
-  showForm = ({
+  React.useEffect(() => {
+    initilizeRecaptcha();
+  }, []);
+  const showForm = ({
     values,
     errors,
     touched,
@@ -49,7 +30,7 @@ class Passwordforgot extends Component {
     handleSubmit,
     onSubmit,
     isSubmitting,
-    setFieldValue
+    setFieldValue,
   }) => {
     return (
       <form role="form" onSubmit={handleSubmit}>
@@ -81,7 +62,7 @@ class Passwordforgot extends Component {
             sitekey={process.env.REACT_APP_RECAPCHA_KEY}
             render="explicit"
             theme="light"
-            verifyCallback={response => {
+            verifyCallback={(response) => {
               setFieldValue("recaptcha", response);
             }}
             onloadCallback={() => {
@@ -106,51 +87,48 @@ class Passwordforgot extends Component {
     );
   };
 
-  render() {
-    let result = this.state.response;
-    return (
-      <div className="login-page">
-        <div className="login-box">
-          <div className="login-logo">
-            <a href="#">
-              <b>Basic</b>POS
-            </a>
-          </div>
-          {/* /.login-logo */}
-          <div className="card">
-            <div className="card-body login-card-body">
-              <p className="login-box-msg">
-                You forgot your password? Here you can easily retrieve a new
-                password.
-              </p>
-              <Formik
-                initialValues={{
-                  email: "",
-                  recaptcha: ""
-                }}
-                onSubmit={(values, { setSubmitting }) => {
-                  this.submitForm(values, this.props.history);
-                  setSubmitting(false);
-                }}
-                validationSchema={PasswordForgotSchema}
-              >
-                {/* {this.showForm()}            */}
-                {props => this.showForm(props)}
-              </Formik>
-              <p className="mb-0">
-                <Link to="/login">Login</Link>
-              </p>
+  return (
+    <div className="login-page">
+      <div className="login-box">
+        <div className="login-logo">
+          <a href="#">
+            <b>Basic</b>POS
+          </a>
+        </div>
+        {/* /.login-logo */}
+        <div className="card">
+          <div className="card-body login-card-body">
+            <p className="login-box-msg">
+              You forgot your password? Here you can easily retrieve a new
+              password.
+            </p>
+            <Formik
+              initialValues={{
+                email: "",
+                recaptcha: "",
+              }}
+              onSubmit={(values, { setSubmitting }) => {
+                dispatch(
+                  passwordForgotAction.forgotpassword(values, props.history)
+                );
+                setSubmitting(false);
+              }}
+              validationSchema={PasswordForgotSchema}
+            >
+              {/* {this.showForm()}            */}
+              {(props) => showForm(props)}
+            </Formik>
+            <p className="mb-0">
+              <Link to="/login">Login</Link>
+            </p>
 
-              <p className="mb-0">
-                <Link to="/register">Register a new membership</Link>
-              </p>
-            </div>
-            {/* /.login-card-body */}
+            <p className="mb-0">
+              <Link to="/register">Register a new membership</Link>
+            </p>
           </div>
+          {/* /.login-card-body */}
         </div>
       </div>
-    );
-  }
-}
-
-export default Passwordforgot;
+    </div>
+  );
+};

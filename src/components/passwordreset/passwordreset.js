@@ -1,46 +1,21 @@
 import React, { Component } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
-import swal from "sweetalert";
 import { Link } from "react-router-dom";
+import * as passwordReset from "./../../actions/resetpassword.action";
+import { useDispatch } from "react-redux";
 const PasswordresetSchema = Yup.object().shape({
   password: Yup.string().required("New Password is required"),
   confirm_password: Yup.string().oneOf(
     [Yup.ref("password"), null],
     "Both password need to be the same"
-  )
+  ),
 });
 
-class Passwordreset extends Component {
-  constructor(props) {
-    super(props);
+export default (props) => {
+  const dispatch = useDispatch();
 
-    this.state = {
-      response: {},
-      error_message: null,
-      avatar: ""
-    };
-  }
-
-  submitForm = async (values, history, token) => {
-    await axios
-      .put(process.env.REACT_APP_API_URL +"password/reset?token=" + token, values)
-      .then(res => {
-        if (res.data.result === "success") {
-          swal("Success!", res.data.message, "success").then(value => {
-            history.push("/login");
-          });
-        } else if (res.data.result === "error") {
-          swal("Error!", res.data.message, "error");
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        swal("Error!", "Unexpected error", "error");
-      });
-  };
-  showForm = ({
+  const showForm = ({
     values,
     errors,
     touched,
@@ -48,7 +23,7 @@ class Passwordreset extends Component {
     handleSubmit,
     onSubmit,
     isSubmitting,
-    setFieldValue
+    setFieldValue,
   }) => {
     return (
       <form role="form" onSubmit={handleSubmit}>
@@ -113,53 +88,51 @@ class Passwordreset extends Component {
     );
   };
 
-  render() {
-    return (
-      <div className="login-page">
-        <div className="login-box">
-          <div className="login-logo">
-            <a href="#">
-              <b>Basic</b>POS
-            </a>
-          </div>
-          {/* /.login-logo */}
-          <div className="card">
-            <div className="card-body login-card-body">
-              <p className="login-box-msg">
-                You are only one step a way from your new password, recover your
-                password now.
-              </p>
-              <Formik
-                initialValues={{
-                  password: ""
-                }}
-                onSubmit={(values, { setSubmitting }) => {
-                  this.submitForm(
+  return (
+    <div className="login-page">
+      <div className="login-box">
+        <div className="login-logo">
+          <a href="#">
+            <b>Basic</b>POS
+          </a>
+        </div>
+        {/* /.login-logo */}
+        <div className="card">
+          <div className="card-body login-card-body">
+            <p className="login-box-msg">
+              You are only one step a way from your new password, recover your
+              password now.
+            </p>
+            <Formik
+              initialValues={{
+                password: "",
+              }}
+              onSubmit={(values, { setSubmitting }) => {
+                dispatch(
+                  passwordReset.resetpassword(
                     values,
-                    this.props.history,
-                    this.props.match.params["token"]
-                  );
-                  setSubmitting(true);
-                }}
-                validationSchema={PasswordresetSchema}
-              >
-                {/* {this.showForm()}            */}
-                {props => this.showForm(props)}
-              </Formik>
-              <p className="mb-0">
-                <Link to="/login">Login</Link>
-              </p>
+                    props.history,
+                    props.match.params["token"]
+                  )
+                );
+                setSubmitting(true);
+              }}
+              validationSchema={PasswordresetSchema}
+            >
+              {/* {this.showForm()}            */}
+              {(props) => showForm(props)}
+            </Formik>
+            <p className="mb-0">
+              <Link to="/login">Login</Link>
+            </p>
 
-              <p className="mb-0">
-                <Link to="/register">Register a new membership</Link>
-              </p>
-            </div>
-            {/* /.login-card-body */}
+            <p className="mb-0">
+              <Link to="/register">Register a new membership</Link>
+            </p>
           </div>
+          {/* /.login-card-body */}
         </div>
       </div>
-    );
-  }
-}
-
-export default Passwordreset;
+    </div>
+  );
+};

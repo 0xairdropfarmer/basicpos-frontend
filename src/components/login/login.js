@@ -7,6 +7,7 @@ import Recaptcha from "react-recaptcha";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import * as loginActions from "../../actions/login.action";
+import { server } from "../../constants";
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
     .min(2, "username is Too Short!")
@@ -30,7 +31,7 @@ const Login = (props) => {
 
   useEffect(() => {
     initilizeRecaptcha();
-    if (localStorage.getItem("TOKEN_KEY") != null) {
+    if (localStorage.getItem(server.TOKEN_KEY) != null) {
       return props.history.push("/dashboard");
     }
     let notify = props.match.params["notify"];

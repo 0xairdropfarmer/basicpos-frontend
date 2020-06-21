@@ -1,24 +1,25 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
 import { withRouter, Link } from "react-router-dom";
+import { server } from "../../constants";
 class Header extends Component {
-  Logout = e => {
+  Logout = (e) => {
     swal("Are your sure SignOut?", {
       buttons: {
         nope: {
           text: "Let me back",
-          value: "nope"
+          value: "nope",
         },
         sure: {
           text: "I'm, Sure",
-          value: "sure"
-        }
-      }
-    }).then(value => {
+          value: "sure",
+        },
+      },
+    }).then((value) => {
       switch (value) {
         case "sure":
-          swal(" SignOut Successfully", "success").then(val => {
-            localStorage.removeItem("TOKEN_KEY");
+          swal(" SignOut Successfully", "success").then((val) => {
+            localStorage.removeItem(server.TOKEN_KEY);
             return this.props.history.push("/login");
           });
           break;
