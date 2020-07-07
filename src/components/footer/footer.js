@@ -8,7 +8,7 @@ class Footer extends Component {
           <b>Version</b> 3.0.2-pre
         </div>
         <strong>
-          Copyright © 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.
+          Copyright © 2014-2020 <a href="http://BasicPOS.io">BasicPOS.io</a>.
         </strong>{" "}
         All rights reserved.
       </footer>

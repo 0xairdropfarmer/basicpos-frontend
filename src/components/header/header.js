@@ -46,11 +46,6 @@ class Header extends Component {
               Home
             </a>
           </li>
-          <li className="nav-item d-none d-sm-inline-block">
-            <a href="#" className="nav-link">
-              Contact
-            </a>
-          </li>
         </ul>
         {/* SEARCH FORM */}
         <form className="form-inline ml-3">

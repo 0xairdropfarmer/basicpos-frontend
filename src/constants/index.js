@@ -12,6 +12,12 @@ export const FORGOT_FETCHING = "FORGOT_FETCHING";
 export const FORGOT_SUCCESS = "FORGOT_SUCCESS";
 export const FORGOT_FAILED = "FORGOT_FAILED";
 
+// POS Machine
+export const POSMACHINE_FETCHING = "POSMACHINE_FETCHING";
+export const POSMACHINE_SUCCESS = "POSMACHINE_SUCCESS";
+export const POSMACHINE_FAILED = "POSMACHINE_FAILED";
+export const POSMACHINE_CLEAR = "POSMACHINE_CLEAR";
+
 export const server = {
   LOGIN_URL: `login`,
   REFRESH_TOKEN_URL: `refresh/token`,
