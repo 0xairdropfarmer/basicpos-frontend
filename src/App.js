@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/header";
 import Sidebar from "./components/sidebar";
 import Footer from "./components/footer";
@@ -9,9 +8,12 @@ import Dashboard from "./components/dashboard";
 import Profile from "./components/profile";
 import Passwordreset from "./components/passwordreset";
 import Passwordforgot from "./components/passwordforgot";
-import PosMachineIndex from "./components/posmachine_index";
-import PosMachineCreate from "./components/posmachine_create";
-import PosMachineUpdate from "./components/posmachine_update";
+import PosMachineIndex from "./components/posmachine/index";
+import PosMachineCreate from "./components/posmachine/create";
+import PosMachineUpdate from "./components/posmachine/update";
+import BranchCreate from './components/branch/create'
+import BranchUpdate from './components/branch/update'
+import BranchIndex from './components/branch/index'
 import {
   BrowserRouter as Router,
   Switch,
@@ -35,8 +37,8 @@ const App = (props) => {
         loginActions.isLoggedIn() === true ? (
           <Component {...props} />
         ) : (
-          <Redirect to="/login" />
-        )
+            <Redirect to="/login" />
+          )
       }
     />
   );
@@ -60,6 +62,15 @@ const App = (props) => {
           <SecuredRoute
             path="/posmachine/update/:id"
             component={PosMachineUpdate}
+          />
+          <SecuredRoute exact path="/branch/" component={BranchIndex} />
+          <SecuredRoute
+            path="/branch/create"
+            component={BranchCreate}
+          />
+          <SecuredRoute
+            path="/branch/update/:id"
+            component={BranchUpdate}
           />
           <Route path="/" exact component={Login} />
           {loginActions.isLoggedIn() && <Footer />}

@@ -18,6 +18,12 @@ export const POSMACHINE_SUCCESS = "POSMACHINE_SUCCESS";
 export const POSMACHINE_FAILED = "POSMACHINE_FAILED";
 export const POSMACHINE_CLEAR = "POSMACHINE_CLEAR";
 
+//BRANCH
+export const BRANCH_FETCHING = "BRANCH_FETCHING";
+export const BRANCH_SUCCESS = "BRANCH_SUCCESS";
+export const BRANCH_FAILED = "BRANCH_FAILED";
+export const BRANCH_CLEAR = "BRANCH_CLEAR";
+
 export const server = {
   LOGIN_URL: `login`,
   REFRESH_TOKEN_URL: `refresh/token`,

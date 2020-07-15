@@ -61,7 +61,7 @@ class Profile extends Component {
     var jsonPayload = decodeURIComponent(
       atob(base64)
         .split("")
-        .map(function(c) {
+        .map(function (c) {
           return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
         })
         .join("")
@@ -76,7 +76,6 @@ class Profile extends Component {
   }
 
   showPreviewImage = values => {
-    console.log(this.state.response.avatar);
     return (
       <div class="text-center">
         <img
@@ -84,7 +83,7 @@ class Profile extends Component {
           src={
             values.file_obj != null
               ? values.file_obj
-              : process.env.REACT_APP_BACKEND_URL +"/images/user.png"
+              : process.env.REACT_APP_BACKEND_URL + "/images/user.png"
           }
           class="profile-user-img img-fluid img-circle"
           width={100}
@@ -94,10 +93,10 @@ class Profile extends Component {
   };
   getData = async id => {
     await axios
-      .get(process.env.REACT_APP_API_URL +"profile/id/" + id)
+      .get(process.env.REACT_APP_API_URL + "profile/id/" + id)
       .then(response => {
         console.log(response.data);
-        document.getElementById("avatars").src = process.env.REACT_APP_BACKEND_URL +"images/"+response.data.avatars
+        document.getElementById("avatars").src = process.env.REACT_APP_BACKEND_URL + "images/" + response.data.avatars
         // profile.setAttribute("src",);
         this.setState({ response: response.data });
       })
@@ -107,7 +106,7 @@ class Profile extends Component {
   };
   submitForm = async formData => {
     await axios
-      .put(process.env.REACT_APP_API_URL +"profile", formData)
+      .put(process.env.REACT_APP_API_URL + "profile", formData)
       .then(res => {
         console.log(res.data.result);
         if (res.data.result === "success") {
@@ -332,14 +331,14 @@ class Profile extends Component {
                       result
                         ? result
                         : {
-                            id: "",
-                            username: "",
-                            email: "",
-                            first_name: "",
-                            last_name: "",
-                            phone: "",
-                            address: ""
-                          }
+                          id: "",
+                          username: "",
+                          email: "",
+                          first_name: "",
+                          last_name: "",
+                          phone: "",
+                          address: ""
+                        }
                     }
                     onSubmit={(values, { setSubmitting }) => {
                       let formData = new FormData();
@@ -357,7 +356,7 @@ class Profile extends Component {
                       this.submitForm(formData, this.props.history);
                       setSubmitting(false);
                     }}
-                    // validationSchema={ProfileSchema}
+                  // validationSchema={ProfileSchema}
                   >
                     {props => this.showForm(props)}
                   </Formik>

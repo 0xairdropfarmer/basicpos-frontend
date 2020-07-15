@@ -29,6 +29,12 @@ class Sidebar extends Component {
                   <p>Pos Machine</p>
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link to="/branch" className="nav-link">
+                  <i className="nav-icon fas fa-building" />
+                  <p>Branch</p>
+                </Link>
+              </li>
             </ul>
           </nav>
           {/* /.sidebar-menu */}

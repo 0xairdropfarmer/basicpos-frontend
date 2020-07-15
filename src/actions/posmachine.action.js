@@ -3,7 +3,6 @@ import {
   POSMACHINE_SUCCESS,
   POSMACHINE_FAILED,
   POSMACHINE_CLEAR,
-  server,
 } from "../constants";
 import swal from "sweetalert";
 import { httpClient } from "./../utils/HttpClient";
@@ -51,6 +50,7 @@ export const getPosMachineById = (id) => {
     }
   };
 };
+
 export const create = (values, history) => {
   return async (dispatch) => {
     dispatch(setPOSMachineStateToFetching());
