@@ -35,6 +35,12 @@ class Sidebar extends Component {
                   <p>Branch</p>
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link to="/supplier" className="nav-link">
+                  <i className="nav-icon fas fa-users" />
+                  <p>Supplier</p>
+                </Link>
+              </li>
             </ul>
           </nav>
           {/* /.sidebar-menu */}

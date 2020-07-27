@@ -50,6 +50,12 @@ export default (props) => {
         return (
             <form role="form" onSubmit={handleSubmit}>
                 <div class="card-body">
+                    <input
+                        type="hidden"
+                        name="_id"
+                        onChange={handleChange}
+                        value={values._id}
+                    />
                     <div className="form-group input-group has-feedback">
                         <input
                             type="text"

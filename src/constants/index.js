@@ -24,6 +24,12 @@ export const BRANCH_SUCCESS = "BRANCH_SUCCESS";
 export const BRANCH_FAILED = "BRANCH_FAILED";
 export const BRANCH_CLEAR = "BRANCH_CLEAR";
 
+// SUPPLIER
+export const SUPPLIER_FETCHING = "SUPPLIER_FETCHING";
+export const SUPPLIER_SUCCESS = "SUPPLIER_SUCCESS";
+export const SUPPLIER_FAILED = "SUPPLIER_FAILED";
+export const SUPPLIER_CLEAR = "SUPPLIER_CLEAR";
+
 export const server = {
   LOGIN_URL: `login`,
   REFRESH_TOKEN_URL: `refresh/token`,

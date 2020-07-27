@@ -7,10 +7,6 @@ import { server } from "../../constants";
 export default (props) => {
     const dispatch = useDispatch();
 
-    const branchReducer = useSelector(
-        ({ branchReducer }) => branchReducer
-    );
-
     useEffect(() => {
         if (localStorage.getItem(server.TOKEN_KEY) === null) {
             return props.history.push("/login");
