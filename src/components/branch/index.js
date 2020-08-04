@@ -13,8 +13,10 @@ export default (props) => {
         if (localStorage.getItem(server.TOKEN_KEY) === null) {
             return props.history.push("/login");
         }
-        dispatch(branchActions.Index());
+        dispatch(branchActions.Index())
+
     }, []);
+
     function confirmDelete(id) {
         swal({
             title: "Are you sure?",
@@ -53,9 +55,10 @@ export default (props) => {
                         <div className="col-12">
                             <div className="card">
                                 <div className="card-header">
-                                    <h3 className="card-title"></h3>
+
                                     <div className="card-tools">
                                         <div className="input-group input-group-sm">
+
                                             <Link to="/branch/create">
                                                 <button type="submit" className="btn btn-default">
                                                     <i className="fas fa-plus" />
@@ -69,9 +72,11 @@ export default (props) => {
                                     <table className="table table-hover text-nowrap">
                                         <thead>
                                             <tr>
+
                                                 <th>Front Image</th>
                                                 <th>Name</th>
                                                 <th>Address</th>
+                                                <th>POS</th>
                                                 <th>Created Date</th>
                                                 <th>Action</th>
                                             </tr>
@@ -81,13 +86,19 @@ export default (props) => {
                                                 branchReducer.result.map((data, index) => {
                                                     return (
                                                         <tr key={index}>
+
                                                             <td><img class="img-fluid img-rounded"
                                                                 width={200} src={process.env.REACT_APP_BRANCH_FRONT_IMAGE_PATH + '/' + data.frontimage} /></td>
                                                             <td>{data.name}</td>
                                                             <td>{data.address}</td>
+                                                            <td>{data.pos_machines.map(value => {
+                                                                return value.alias + ","
+                                                            })}</td>
                                                             <td>{data.created}</td>
                                                             <td>
-                                                                <Link to={"/branch/update/" + data._id}>
+                                                                <Link to={"/branch/update/" + data._id}
+                                                                    onClick={() => dispatch(branchActions.clearState())}
+                                                                >
                                                                     Edit
                                 </Link>
                                                                 {" | "}

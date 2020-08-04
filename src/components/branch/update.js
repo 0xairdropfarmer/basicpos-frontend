@@ -3,10 +3,10 @@ import { Formik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import * as branchActions from "../../actions/branch.action";
 import { server } from "../../constants";
-
+import Select from 'react-select'
 export default (props) => {
     const dispatch = useDispatch();
-
+    const [multiselect, setMultiselect] = useState([])
     const branchReducer = useSelector(
         ({ branchReducer }) => branchReducer
     );
@@ -16,12 +16,17 @@ export default (props) => {
             return props.history.push("/login");
         }
         const { id } = props.match.params;
+        // dispatch(branchActions.getDropdownPOS())
         dispatch(branchActions.getSingleBranch(id))
+        dispatch(branchActions.clearState());
+        // dispatch(branchActions.getSingleBranch(id))
+
     }, []);
     useEffect(() => {
         if (branchReducer.result) {
             let initial_image = { file_obj: '', frontimage: branchReducer.result.frontimage }
             showPreviewImage(initial_image)
+
         }
     }, [branchReducer])
     const showPreviewImage = (values) => {
@@ -38,6 +43,35 @@ export default (props) => {
             />
         );
     };
+    const renderSelectwithSelected = () => {
+        {
+            console.log(branchReducer.result)
+            if (branchReducer.result) {
+                return (
+                    <div class="form-group ">
+                        <Select
+                            name="pos_machines"
+                            defaultValue={branchReducer.result
+                                ? branchReducer.result.pos_machines.map(val => {
+                                    return {
+                                        'value': val._id,
+                                        'label': val.alias
+                                    }
+                                }) : null}
+                            // onChange={setMultiselect}
+                            isMulti
+                            closeMenuOnSelect={false}
+                            options={branchReducer.options
+                                ? branchReducer.options : null}
+                        />
+                    </div>
+
+                )
+            } else {
+                return null; // or loading graphic
+            }
+        }
+    }
     const showForm = ({
         values,
         errors,
@@ -130,9 +164,11 @@ export default (props) => {
                             </small>
                         ) : null}
                     </div>
+                    {renderSelectwithSelected()}
                     <div class="form-group ">
                         {showPreviewImage(values)}
                     </div>
+
                     <div class="form-group ">
 
                         <div class="input-group col-5">

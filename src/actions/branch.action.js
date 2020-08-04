@@ -2,7 +2,7 @@ import {
     BRANCH_FETCHING,
     BRANCH_SUCCESS,
     BRANCH_FAILED,
-    BRANCH_CLEAR,
+    BRANCH_CLEAR, FETCHOPTION_SUCCESS
 } from "../constants";
 import swal from "sweetalert";
 import { httpClient } from "./../utils/HttpClient";
@@ -21,7 +21,10 @@ export const setBranchStateToSuccess = (payload) => ({
     type: BRANCH_SUCCESS,
     payload,
 });
-
+export const setFetchOptionStateToSuccess = (payload) => ({
+    type: FETCHOPTION_SUCCESS,
+    payload,
+});
 
 export const Index = () => {
     return async (dispatch) => {
@@ -38,14 +41,39 @@ export const Index = () => {
         }
     };
 };
+export const getDropdownPOS = () => {
+    return async (dispatch) => {
+        dispatch(setBranchStateToFetching());
+        const response = await httpClient.get(
+            process.env.REACT_APP_API_URL + "branch_getpos"
+        );
+        if (response.data.result == "success") {
+            let result = response.data.data.flat().map(item => {
+                return {
+                    value: item._id,
+                    label: item.alias
+                };
+            })
+
+            dispatch(setFetchOptionStateToSuccess(result));
+        } else if (response.data.result === "error") {
+            dispatch(setBranchStateToFailed());
+            swal("Error!", response.data.message, "error");
+        }
+    };
+};
 export const getSingleBranch = (id) => {
     return async (dispatch) => {
         dispatch(setBranchStateToFetching());
         const response = await httpClient.get(
             process.env.REACT_APP_API_URL + "branch/" + id
         );
+
         if (response.data.result == "success") {
-            dispatch(setBranchStateToSuccess(response.data.data));
+            dispatch(getDropdownPOS()).then(() => {
+                dispatch(setBranchStateToSuccess(response.data.data));
+            })
+
         } else if (response.data.result === "error") {
             dispatch(setBranchStateToFailed());
             swal("Error!", response.data.message, "error");
@@ -106,3 +134,8 @@ export const Remove = (id) => {
         }
     };
 };
+export const clearState = () => {
+    return dispatch => {
+        dispatch(setBranchStateToClear())
+    }
+}

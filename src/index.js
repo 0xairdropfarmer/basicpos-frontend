@@ -8,7 +8,7 @@ import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import reducers from "./reducers";
 import logger from "redux-logger";
-
+import { composeWithDevTools } from 'redux-devtools-extension';
 var middlewares = null;
 
 if (process.env.REACT_APP_IS_PRODUCTION === "1") {
@@ -17,7 +17,7 @@ if (process.env.REACT_APP_IS_PRODUCTION === "1") {
   middlewares = applyMiddleware(thunk, logger);
 }
 
-const store = createStore(reducers, middlewares);
+const store = createStore(reducers, composeWithDevTools(middlewares));
 
 ReactDOM.render(
   <Provider store={store}>

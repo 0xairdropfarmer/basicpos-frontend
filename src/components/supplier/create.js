@@ -23,6 +23,7 @@ export default (props) => {
         if (localStorage.getItem(server.TOKEN_KEY) === null) {
             return props.history.push("/login");
         }
+
     }, []);
 
     const showForm = ({

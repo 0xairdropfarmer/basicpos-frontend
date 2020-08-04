@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
+import Select from 'react-select'
 import * as branchActions from "../../actions/branch.action";
 import { server } from "../../constants";
 
 export default (props) => {
     const dispatch = useDispatch();
+    const [multiselect, setMultiselect] = useState([])
+    const branchReducer = useSelector(
+        ({ branchReducer }) => branchReducer
+    );
+    useEffect(() => {
+        console.log(multiselect)
+    }, [multiselect])
 
     useEffect(() => {
         if (localStorage.getItem(server.TOKEN_KEY) === null) {
             return props.history.push("/login");
         }
+        dispatch(branchActions.getDropdownPOS())
     }, []);
     const showPreviewImage = values => {
         return (
@@ -113,6 +122,17 @@ export default (props) => {
                         ) : null}
                     </div>
                     <div class="form-group ">
+                        <Select
+                            value={multiselect}
+                            onChange={setMultiselect}
+                            isMulti
+                            closeMenuOnSelect={false}
+                            options={branchReducer.options
+                                ? branchReducer.options : null}
+                        />
+                    </div>
+
+                    <div class="form-group ">
                         {showPreviewImage(values)}
                     </div>
                     <div class="form-group ">
@@ -187,6 +207,9 @@ export default (props) => {
                             formData.append("name", values.name);
                             formData.append("tel", values.tel);
                             formData.append("address", values.address);
+                            let result = multiselect.map(arr => arr.value)
+
+                            formData.append("pos_machines", result)
                             if (values.frontimage) {
                                 formData.append("frontimage", values.frontimage);
                             }
