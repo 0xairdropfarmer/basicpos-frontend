@@ -58,7 +58,8 @@ export default (props) => {
                                         'label': val.alias
                                     }
                                 }) : null}
-                            // onChange={setMultiselect}
+                            onChange={setMultiselect}
+
                             isMulti
                             closeMenuOnSelect={false}
                             options={branchReducer.options
@@ -244,6 +245,9 @@ export default (props) => {
                             formData.append("name", values.name);
                             formData.append("tel", values.tel);
                             formData.append("address", values.address);
+                            let result = multiselect.map(arr => arr.value)
+
+                            formData.append("pos_machines", result)
                             if (values.frontimage) {
                                 formData.append("frontimage", values.frontimage);
                             }

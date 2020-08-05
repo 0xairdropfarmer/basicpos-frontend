@@ -11,9 +11,7 @@ export default (props) => {
     const branchReducer = useSelector(
         ({ branchReducer }) => branchReducer
     );
-    useEffect(() => {
-        console.log(multiselect)
-    }, [multiselect])
+
 
     useEffect(() => {
         if (localStorage.getItem(server.TOKEN_KEY) === null) {
