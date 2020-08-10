@@ -4,11 +4,16 @@ import { server } from "../../constants";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
+import Table from '../Table';
+import './branch.css'
+import loading from '../../assets/image/loading.gif'
 export default (props) => {
     const branchReducer = useSelector(
         ({ branchReducer }) => branchReducer
     );
     const dispatch = useDispatch();
+
+    const [data, setData] = useState([]);
     useEffect(() => {
         if (localStorage.getItem(server.TOKEN_KEY) === null) {
             return props.history.push("/login");
@@ -16,6 +21,9 @@ export default (props) => {
         dispatch(branchActions.Index())
 
     }, []);
+    useEffect(() => {
+        setData(branchReducer.result)
+    }, [branchReducer.result])
 
     function confirmDelete(id) {
         swal({
@@ -32,6 +40,58 @@ export default (props) => {
                 });
             }
         });
+    }
+    const columns = React.useMemo(
+        () => [
+            {
+                Header: "Front Image",
+                accessor: "frontimage",
+                Cell: ({ cell: { value } }) => <img class="img-fluid img-rounded"
+                    width={200} src={process.env.REACT_APP_BRANCH_FRONT_IMAGE_PATH + '/' + value} />
+            },
+            {
+                Header: 'Name',
+                accessor: 'name', // accessor is the "key" in the data
+            },
+            {
+                Header: 'Address',
+                accessor: 'address',
+            },
+            {
+                Header: 'Pos Machine',
+                accessor: 'pos_machines',
+                Cell: ({ cell: { value } }) => {
+                    return value.map(data => {
+                        return <span key={data} className="badge">{data.alias}</span>
+                    })
+                }
+            },
+            {
+                Header: 'Action',
+                accessor: '_id',
+                Cell: ({ cell: { value } }) => {
+                    // alert(id)
+                    return <><Link to={"/branch/update/" + value} type="button"
+                        class="btn btn-primary" style={{ 'margin-right': '5px' }}
+                        onClick={() => dispatch(branchActions.clearState())}
+                    >
+                        Edit
+                        </Link>
+                        <Link type="button" class="btn btn-danger" onClick={() => confirmDelete(value)}>
+                            Delete
+                    </Link></>
+                }
+            },
+        ],
+        []
+    )
+    const Holdon = (columns) => {
+        if (branchReducer.result) {
+            return <Table columns={columns} data={branchReducer.result} />
+        } else {
+            return <img class="img-fluid img-rounded"
+                src={loading} />
+        }
     }
     return (
         <div className="content-wrapper">
@@ -67,56 +127,12 @@ export default (props) => {
                                         </div>
                                     </div>
                                 </div>
-                                {/* /.card-header */}
-                                <div className="card-body table-responsive p-0">
-                                    <table className="table table-hover text-nowrap">
-                                        <thead>
-                                            <tr>
-
-                                                <th>Front Image</th>
-                                                <th>Name</th>
-                                                <th>Address</th>
-                                                <th>POS</th>
-                                                <th>Created Date</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {branchReducer.result ? (
-                                                branchReducer.result.map((data, index) => {
-                                                    return (
-                                                        <tr key={index}>
-
-                                                            <td><img class="img-fluid img-rounded"
-                                                                width={200} src={process.env.REACT_APP_BRANCH_FRONT_IMAGE_PATH + '/' + data.frontimage} /></td>
-                                                            <td>{data.name}</td>
-                                                            <td>{data.address}</td>
-                                                            <td>{data.pos_machines.map(value => {
-                                                                return value.alias + ","
-                                                            })}</td>
-                                                            <td>{data.created}</td>
-                                                            <td>
-                                                                <Link to={"/branch/update/" + data._id}
-                                                                    onClick={() => dispatch(branchActions.clearState())}
-                                                                >
-                                                                    Edit
-                                </Link>
-                                                                {" | "}
-                                                                <Link onClick={() => confirmDelete(data._id)}>
-                                                                    Delete
-                                </Link>
-                                                            </td>
-                                                        </tr>
-                                                    );
-                                                })
-                                            ) : (
-                                                    <tr> <td> No data </td></tr>
-                                                )}
-                                        </tbody>
-                                    </table>
+                                <div className="card card-body">
+                                    {Holdon(columns, data)}
                                 </div>
-                                {/* /.card-body */}
+
                             </div>
+
                             {/* /.card */}
                         </div>
                     </div>

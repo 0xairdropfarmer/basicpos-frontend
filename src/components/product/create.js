@@ -1,78 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
-import * as branchActions from "../../actions/branch.action";
-import { server } from "../../constants";
 import Select from 'react-select'
+import * as productActions from "../../actions/product.action";
+import { server } from "../../constants";
+
 export default (props) => {
     const dispatch = useDispatch();
     const [multiselect, setMultiselect] = useState([])
-    const branchReducer = useSelector(
-        ({ branchReducer }) => branchReducer
+    const productReducer = useSelector(
+        ({ productReducer }) => productReducer
     );
+
 
     useEffect(() => {
         if (localStorage.getItem(server.TOKEN_KEY) === null) {
             return props.history.push("/login");
         }
-        const { id } = props.match.params;
-        // dispatch(branchActions.getDropdownPOS())
-        dispatch(branchActions.getSingleBranch(id))
-        dispatch(branchActions.clearState());
-        // dispatch(branchActions.getSingleBranch(id))
-
+        dispatch(productActions.getDropdownPOS())
     }, []);
-    useEffect(() => {
-        if (branchReducer.result) {
-            let initial_image = { file_obj: '', frontimage: branchReducer.result.frontimage }
-            showPreviewImage(initial_image)
-
-        }
-    }, [branchReducer])
-    const showPreviewImage = (values) => {
+    const showPreviewImage = values => {
         return (
             <img
-                id="frontimage"
+                id="image"
                 src={
                     values.file_obj != null
                         ? values.file_obj
-                        : process.env.REACT_APP_BRANCH_FRONT_IMAGE_PATH + '/' + values.frontimage
+                        : "https://via.placeholder.com/300"
                 }
                 class="img-fluid"
                 width={300}
             />
         );
     };
-    const renderSelectwithSelected = () => {
-        {
-
-            if (branchReducer.result) {
-                return (
-                    <div class="form-group ">
-                        <Select
-                            name="pos_machines"
-                            defaultValue={branchReducer.result
-                                ? branchReducer.result.pos_machines.map(val => {
-                                    return {
-                                        'value': val._id,
-                                        'label': val.alias
-                                    }
-                                }) : null}
-                            onChange={setMultiselect}
-
-                            isMulti
-                            closeMenuOnSelect={false}
-                            options={branchReducer.options
-                                ? branchReducer.options : null}
-                        />
-                    </div>
-
-                )
-            } else {
-                return null; // or loading graphic
-            }
-        }
-    }
     const showForm = ({
         values,
         errors,
@@ -85,12 +45,6 @@ export default (props) => {
         return (
             <form role="form" onSubmit={handleSubmit}>
                 <div class="card-body">
-                    <input
-                        type="hidden"
-                        name="_id"
-                        onChange={handleChange}
-                        value={values._id}
-                    />
                     <div className="form-group input-group has-feedback">
                         <input
                             type="text"
@@ -110,7 +64,7 @@ export default (props) => {
                                 <span class="fas fa-building"></span>
                             </div>
                         </div>
-                        {errors.alias && touched.alias ? (
+                        {errors.name && touched.name ? (
                             <small id="passwordHelp" class="text-danger">
                                 {errors.name}
                             </small>
@@ -118,13 +72,13 @@ export default (props) => {
                     </div>
                     <div className="form-group input-group has-feedback">
                         <textarea
-                            name="address"
+                            name="cost"
                             onChange={handleChange}
-                            value={values.address}
+                            value={values.cost}
                             className="form-control"
-                            placeholder="Address"
+                            placeholder="Cost"
                             className={
-                                errors.address && touched.address
+                                errors.cost && touched.cost
                                     ? "form-control is-invalid"
                                     : "form-control"
                             }
@@ -165,11 +119,20 @@ export default (props) => {
                             </small>
                         ) : null}
                     </div>
-                    {renderSelectwithSelected()}
+                    <div class="form-group ">
+                        <Select
+                            value={multiselect}
+                            onChange={setMultiselect}
+                            isMulti
+                            closeMenuOnSelect={false}
+                            options={productReducer.options
+                                ? productReducer.options : null}
+                        />
+                    </div>
+
                     <div class="form-group ">
                         {showPreviewImage(values)}
                     </div>
-
                     <div class="form-group ">
 
                         <div class="input-group col-5">
@@ -233,15 +196,12 @@ export default (props) => {
 
 
                     <Formik
-                        enableReinitialize={true}
-                        initialValues={
-                            branchReducer.result
-                                ? branchReducer.result
-                                : { name: "", tel: "", address: "" }
-                        }
+                        initialValues={{
+                            name: "",
+                            address: "",
+                        }}
                         onSubmit={(values, { setSubmitting }) => {
                             let formData = new FormData();
-                            formData.append("id", branchReducer.result._id);
                             formData.append("name", values.name);
                             formData.append("tel", values.tel);
                             formData.append("address", values.address);
@@ -251,7 +211,7 @@ export default (props) => {
                             if (values.frontimage) {
                                 formData.append("frontimage", values.frontimage);
                             }
-                            dispatch(branchActions.Update(formData, props.history));
+                            dispatch(productActions.Create(formData, props.history));
                             setSubmitting(false);
                         }}
                     // validationSchema={Create_Schema}

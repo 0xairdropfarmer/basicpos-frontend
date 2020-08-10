@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import reducers from "./reducers";
 import logger from "redux-logger";
 import { composeWithDevTools } from 'redux-devtools-extension';
+
 var middlewares = null;
 
 if (process.env.REACT_APP_IS_PRODUCTION === "1") {

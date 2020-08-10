@@ -51,7 +51,6 @@ export default (props) => {
                             name="name"
                             onChange={handleChange}
                             value={values.name}
-                            className="form-control"
                             placeholder="Branch Name"
                             className={
                                 errors.alias && touched.alias

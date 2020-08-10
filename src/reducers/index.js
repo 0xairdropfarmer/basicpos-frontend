@@ -6,6 +6,8 @@ import resetpasswordReducer from "./resetpassword.reducer";
 import posmachineReducer from "./posmachine.reducer";
 import branchReducer from './branch.reducer'
 import supplierReducer from './supplier.reducer'
+import productReducer from './product.reducer'
+import { reducer as sematable } from 'sematable';
 export default combineReducers({
   loginReducer,
   registerReducer,
@@ -13,5 +15,5 @@ export default combineReducers({
   resetpasswordReducer,
   posmachineReducer,
   branchReducer,
-  supplierReducer
+  supplierReducer, productReducer, sematable
 });

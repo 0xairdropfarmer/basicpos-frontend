@@ -45,7 +45,7 @@ export default (props) => {
     };
     const renderSelectwithSelected = () => {
         {
-
+            console.log(branchReducer.result)
             if (branchReducer.result) {
                 return (
                     <div class="form-group ">
