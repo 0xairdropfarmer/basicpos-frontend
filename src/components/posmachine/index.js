@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import * as posmachineActions from "../../actions/posmachine.action";
+import { useTable, useFilters, useSortBy, useGroupBy, useExpanded, usePagination } from "react-table";
+import loading from '../../assets/image/loading.gif'
+import Table from '../Table';
 import { server } from "../../constants";
+import * as moment from 'moment'
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
@@ -8,6 +12,7 @@ export default (props) => {
     const posmachineReducer = useSelector(
         ({ posmachineReducer }) => posmachineReducer
     );
+    const [data, setData] = useState([]);
     const dispatch = useDispatch();
     useEffect(() => {
         if (localStorage.getItem(server.TOKEN_KEY) === null) {
@@ -30,6 +35,50 @@ export default (props) => {
                 });
             }
         });
+    }
+    const columns = React.useMemo(
+        () => [
+            {
+                Header: 'Alias',
+                accessor: 'alias', // accessor is the "key" in the data
+            },
+            {
+                Header: 'Serial number',
+                accessor: 'serial_number',
+            },
+            {
+                Header: 'Created Date',
+                accessor: 'created',
+                Cell: ({ cell: { value } }) => {
+                    return moment(value).format('MMMM Do YYYY, h:mm:ss a')
+                }
+            },
+            {
+                Header: 'Action',
+                accessor: '_id',
+                Cell: ({ cell: { value } }) => {
+                    // alert(id)
+                    return <><Link to={"/posmachine/update/" + value} type="button"
+                        class="btn btn-primary" style={{ 'margin-right': '5px' }}
+                        onClick={() => dispatch(posmachineActions.clearState())}
+                    >
+                        Edit
+                        </Link>
+                        <Link type="button" class="btn btn-danger" onClick={() => confirmDelete(value)}>
+                            Delete
+                    </Link></>
+                }
+            },
+        ],
+        []
+    )
+    const Holdon = (columns) => {
+        if (posmachineReducer.result) {
+            return <Table columns={columns} data={posmachineReducer.result} />
+        } else {
+            return <img class="img-fluid img-rounded"
+                src={loading} width="30%" />
+        }
     }
     return (
         <div className="content-wrapper">
@@ -65,40 +114,7 @@ export default (props) => {
                                 </div>
                                 {/* /.card-header */}
                                 <div className="card-body table-responsive p-0">
-                                    <table className="table table-hover text-nowrap">
-                                        <thead>
-                                            <tr>
-                                                <th>Alias</th>
-                                                <th>Serial Name</th>
-                                                <th>Created Date</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {posmachineReducer.result ? (
-                                                posmachineReducer.result.map((data, index) => {
-                                                    return (
-                                                        <tr key={index}>
-                                                            <td>{data.alias}</td>
-                                                            <td>{data.serial_number}</td>
-                                                            <td>{data.created}</td>
-                                                            <td>
-                                                                <Link to={"/posmachine/update/" + data._id}>
-                                                                    Edit
-                                </Link>
-                                                                {" | "}
-                                                                <Link onClick={() => confirmDelete(data._id)}>
-                                                                    Delete
-                                </Link>
-                                                            </td>
-                                                        </tr>
-                                                    );
-                                                })
-                                            ) : (
-                                                    <td> No data </td>
-                                                )}
-                                        </tbody>
-                                    </table>
+                                    {Holdon(columns, data)}
                                 </div>
                                 {/* /.card-body */}
                             </div>

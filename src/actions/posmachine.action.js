@@ -21,6 +21,11 @@ export const setPOSMachineStateToSuccess = (payload) => ({
   type: POSMACHINE_SUCCESS,
   payload,
 });
+export const clearState = () => {
+  return dispatch => {
+    dispatch(setPOSMachineStateToClear())
+  }
+}
 export const index = () => {
   return async (dispatch) => {
     dispatch(setPOSMachineStateToFetching);
