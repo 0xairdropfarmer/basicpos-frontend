@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as branchActions from "../../actions/branch.action";
 import { server } from "../../constants";
 import { useSelector, useDispatch } from "react-redux";
+
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import Table from '../Table';

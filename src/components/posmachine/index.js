@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import * as posmachineActions from "../../actions/posmachine.action";
-import { useTable, useFilters, useSortBy, useGroupBy, useExpanded, usePagination } from "react-table";
 import loading from '../../assets/image/loading.gif'
 import Table from '../Table';
 import { server } from "../../constants";
@@ -12,8 +11,20 @@ export default (props) => {
     const posmachineReducer = useSelector(
         ({ posmachineReducer }) => posmachineReducer
     );
-    const [data, setData] = useState([]);
     const dispatch = useDispatch();
+    // const [data, setData] = React.useState(() => makeData(20))
+    // const [originalData] = React.useState(data)
+    const [skipPageReset, setSkipPageReset] = React.useState(false)
+    const updateMyData = (rowIndex, columnId, value) => {
+        // We also turn on the flag to not reset the page
+        setSkipPageReset(true)
+        let values = { _id: rowIndex, column: columnId, value: value }
+        dispatch(posmachineActions.inline_update(values));
+
+    }
+    React.useEffect(() => {
+        setSkipPageReset(false)
+    }, [posmachineReducer.result])
     useEffect(() => {
         if (localStorage.getItem(server.TOKEN_KEY) === null) {
             return props.history.push("/login");
@@ -61,11 +72,11 @@ export default (props) => {
                     return <><Link to={"/posmachine/update/" + value} type="button"
                         class="btn btn-primary" style={{ 'margin-right': '5px' }}
                         onClick={() => dispatch(posmachineActions.clearState())}
-                    >
+                    ><i class="fa fa-edit"></i>{' '}
                         Edit
                         </Link>
                         <Link type="button" class="btn btn-danger" onClick={() => confirmDelete(value)}>
-                            Delete
+                            <i class="fa fa-trash"></i>{' '}  Delete
                     </Link></>
                 }
             },
@@ -74,7 +85,11 @@ export default (props) => {
     )
     const Holdon = (columns) => {
         if (posmachineReducer.result) {
-            return <Table columns={columns} data={posmachineReducer.result} />
+            return <Table columns={columns} data={posmachineReducer.result}
+                parent_action={posmachineActions}
+                updateMyData={updateMyData}
+                skipPageReset={skipPageReset}
+            />
         } else {
             return <img class="img-fluid img-rounded"
                 src={loading} width="30%" />
@@ -114,7 +129,7 @@ export default (props) => {
                                 </div>
                                 {/* /.card-header */}
                                 <div className="card-body table-responsive p-0">
-                                    {Holdon(columns, data)}
+                                    {Holdon(columns)}
                                 </div>
                                 {/* /.card-body */}
                             </div>
