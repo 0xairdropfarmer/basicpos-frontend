@@ -55,7 +55,7 @@ class Profile extends Component {
   }
 
   parseJwt() {
-    let token = localStorage.getItem("TOKEN_KEY");
+    let token = localStorage.getItem("token");
     var base64Url = token.split(".")[1];
     var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     var jsonPayload = decodeURIComponent(
@@ -136,7 +136,6 @@ class Profile extends Component {
       <form role="form" onSubmit={handleSubmit}>
         {this.showPreviewImage(values)}
         <div className="card-body">
-          <span style={{ color: "#00B0CD", marginLeft: 10 }}>Add Picture</span>
           <div className="form-group">
             <label htmlFor="exampleInputFile">Avatar upload</label>
             <div className="input-group">

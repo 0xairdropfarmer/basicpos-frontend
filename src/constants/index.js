@@ -46,3 +46,8 @@ export const server = {
   TOKEN_KEY: `token`,
   REFRESH_TOKEN_KEY: `refresh_token`,
 };
+
+export const Roles = [
+  { name: "Admin", credentials: "admin" },
+  { name: "Staff", credentials: "staff" },
+]
