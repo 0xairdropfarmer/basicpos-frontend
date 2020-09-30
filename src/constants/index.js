@@ -29,13 +29,25 @@ export const SUPPLIER_FETCHING = "SUPPLIER_FETCHING";
 export const SUPPLIER_SUCCESS = "SUPPLIER_SUCCESS";
 export const SUPPLIER_FAILED = "SUPPLIER_FAILED";
 export const SUPPLIER_CLEAR = "SUPPLIER_CLEAR";
+// Shop Page
+export const SHOP_FETCHING = "SHOP_FETCHING";
+export const SHOP_SUCCESS = "SHOP_SUCCESS";
+export const SHOP_FAILED = "SHOP_FAILED";
 
+export const SHOP_UPDATE_ORDER = "SHOP_UPDATE_ORDER";
+export const SHOP_UPDATE_PAYMENT = "SHOP_UPDATE_PAYMENT";
+// Stock Page
+export const STOCK_FETCHING = "STOCK_FETCHING";
+export const STOCK_SUCCESS = "STOCK_SUCCESS";
+export const STOCK_FAILED = "STOCK_FAILED";
+export const STOCK_CLEAR = "STOCK_CLEAR";
 // PRODUCT
 export const PRODUCT_FETCHING = "SUPPLIER_FETCHING";
 export const PRODUCT_SUCCESS = "SUPPLIER_SUCCESS";
 export const PRODUCT_FAILED = "SUPPLIER_FAILED";
 export const PRODUCT_CLEAR = "SUPPLIER_CLEAR";
 export const FETCH_OPTION_SUCCESS = "FETCH_OPTION_SUCCESS";
+export const imageUrl = "http://localhost:8081";
 export const server = {
   LOGIN_URL: `login`,
   REFRESH_TOKEN_URL: `refresh/token`,
@@ -50,4 +62,4 @@ export const server = {
 export const Roles = [
   { name: "Admin", credentials: "admin" },
   { name: "Staff", credentials: "staff" },
-]
+];

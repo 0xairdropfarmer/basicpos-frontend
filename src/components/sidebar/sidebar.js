@@ -6,18 +6,18 @@ import {
   any,
   not,
   guardFactory,
-  protect
+  protect,
 } from "../react-guard/src";
 import { NeedAdmin, NeedStaff } from "../requirements";
-import { Roles } from '../../constants/'
+import { Roles } from "../../constants/";
 
 export default () => {
-  const [role, setRole] = useState([])
+  const [role, setRole] = useState([]);
   const Admin = guardFactory(NeedAdmin);
   const Staff = guardFactory(NeedStaff);
   useEffect(() => {
-    getcurrentRole()
-  }, [])
+    getcurrentRole();
+  }, []);
   const getcurrentRole = () => {
     let token = localStorage.getItem("token");
     var base64Url = token.split(".")[1];
@@ -32,9 +32,9 @@ export default () => {
     );
 
     let { level } = JSON.parse(jsonPayload);
-    let currentRole = Roles.find(e => e.credentials === level)
-    setRole(currentRole)
-  }
+    let currentRole = Roles.find((e) => e.credentials === level);
+    setRole(currentRole);
+  };
   return (
     <CredentialProvider value={role.credentials}>
       <aside className="main-sidebar sidebar-dark-primary elevation-4">
@@ -57,22 +57,27 @@ export default () => {
                   <p>Dashboard</p>
                 </Link>
               </li>
-              <Admin>
-                <li className="nav-item">
-                  <Link to="/posmachine" className="nav-link">
-                    <i className="nav-icon fas fa-th" />
-                    <p>Pos Machine</p>
-                  </Link>
-                </li>
-              </Admin>
-              <Admin>
-                <li className="nav-item">
-                  <Link to="/branch" className="nav-link">
-                    <i className="nav-icon fas fa-building" />
-                    <p>Branch</p>
-                  </Link>
-                </li>
-              </Admin>
+              <li className="nav-item">
+                <Link to="/order/create" className="nav-link">
+                  <i className="nav-icon fas fa-shopping-cart" />
+                  <p>Order </p>
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Link to="/posmachine" className="nav-link">
+                  <i className="nav-icon fas fa-th" />
+                  <p>Pos Machine</p>
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Link to="/branch" className="nav-link">
+                  <i className="nav-icon fas fa-building" />
+                  <p>Branch</p>
+                </Link>
+              </li>
+
               <li className="nav-item">
                 <Link to="/product" className="nav-link">
                   <i className="nav-icon fas fa-truck" />
@@ -91,9 +96,6 @@ export default () => {
         </div>
         {/* /.sidebar */}
       </aside>
-
     </CredentialProvider>
-  )
-}
-
-
+  );
+};

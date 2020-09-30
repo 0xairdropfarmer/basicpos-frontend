@@ -11,15 +11,19 @@ import Passwordforgot from "./components/passwordforgot";
 import PosMachineIndex from "./components/posmachine/index";
 import PosMachineCreate from "./components/posmachine/create";
 import PosMachineUpdate from "./components/posmachine/update";
-import BranchCreate from './components/branch/create'
-import BranchUpdate from './components/branch/update'
-import BranchIndex from './components/branch/index'
-import SupplierCreate from './components/supplier/create'
-import SupplierUpdate from './components/supplier/update'
-import SupplierIndex from './components/supplier/index'
-import ProductCreate from './components/product/create'
-import ProductUpdate from './components/product/update'
-import ProductIndex from './components/product/index'
+import BranchCreate from "./components/branch/create";
+import BranchUpdate from "./components/branch/update";
+import BranchIndex from "./components/branch/index";
+import SupplierCreate from "./components/supplier/create";
+import SupplierUpdate from "./components/supplier/update";
+import SupplierIndex from "./components/supplier/index";
+import ProductCreate from "./components/product/create";
+import ProductUpdate from "./components/product/update";
+import ProductIndex from "./components/product/index";
+import UserCreate from "./components/user/create";
+import UserUpdate from "./components/user/update";
+import UserIndex from "./components/user/index";
+import CreateOrder from "./components/order/create";
 import {
   BrowserRouter as Router,
   Switch,
@@ -43,8 +47,8 @@ const App = (props) => {
         loginActions.isLoggedIn() === true ? (
           <Component {...props} />
         ) : (
-            <Redirect to="/login" />
-          )
+          <Redirect to="/login" />
+        )
       }
     />
   );
@@ -70,32 +74,18 @@ const App = (props) => {
             component={PosMachineUpdate}
           />
           <SecuredRoute exact path="/branch/" component={BranchIndex} />
-          <SecuredRoute
-            path="/branch/create"
-            component={BranchCreate}
-          />
-          <SecuredRoute
-            path="/branch/update/:id"
-            component={BranchUpdate}
-          />
+          <SecuredRoute path="/branch/create" component={BranchCreate} />
+          <SecuredRoute path="/branch/update/:id" component={BranchUpdate} />
           <SecuredRoute exact path="/supplier/" component={SupplierIndex} />
-          <SecuredRoute
-            path="/supplier/create"
-            component={SupplierCreate}
-          />
+          <SecuredRoute path="/supplier/create" component={SupplierCreate} />
           <SecuredRoute
             path="/supplier/update/:id"
             component={SupplierUpdate}
           />
           <SecuredRoute exact path="/product/" component={ProductIndex} />
-          <SecuredRoute
-            path="/product/create"
-            component={ProductCreate}
-          />
-          <SecuredRoute
-            path="/product/update/:id"
-            component={ProductUpdate}
-          />
+          <SecuredRoute exact path="/order/create" component={CreateOrder} />
+          <SecuredRoute path="/product/create" component={ProductCreate} />
+          <SecuredRoute path="/product/update/:id" component={ProductUpdate} />
           <Route path="/" exact component={Login} />
           {loginActions.isLoggedIn() && <Footer />}
         </div>

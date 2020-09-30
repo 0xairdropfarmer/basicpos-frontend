@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import swal from "sweetalert";
-import { withRouter, Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { server } from "../../constants";
-export default () => {
+export default (props) => {
   const [role, setRole] = useState("")
   const [username, setUsername] = useState("")
+  const history = useHistory();
   useEffect(() => {
     getcurrentRole()
   }, [])
@@ -26,7 +27,7 @@ export default () => {
     setUsername(username)
     setRole(level)
   }
-  const Logout = (e) => {
+  const Logout = () => {
     swal("Are your sure SignOut?", {
       buttons: {
         nope: {
@@ -43,7 +44,7 @@ export default () => {
         case "sure":
           swal(" SignOut Successfully", "success").then((val) => {
             localStorage.removeItem(server.TOKEN_KEY);
-            return this.props.history.push("/login");
+            return history.push("/login");
           });
           break;
         case "nope":
@@ -105,7 +106,7 @@ export default () => {
             <div className="dropdown-divider" />
             <a
               href="javascript:;"
-              onClick={() => this.Logout()}
+              onClick={() => Logout(props)}
               className="dropdown-item"
             >
               <i className="fas fa-sign-out-alt mr-2" /> Logout
