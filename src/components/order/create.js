@@ -4,7 +4,7 @@ import Payment from "./payment";
 import * as productActions from "../../actions/product.action";
 import * as shopActions from "../../actions/shop.action";
 import NumberFormat from "react-number-format";
-
+import { Link } from "react-router-dom";
 import cashier from "./cashier.png";
 export default (props) => {
   const shopReducer = useSelector(({ shopReducer }) => shopReducer);
@@ -21,14 +21,23 @@ export default (props) => {
   const renderOrder = () => {
     const { mOrderLines } = shopReducer;
 
-    console.log("mOrderLines", mOrderLines);
-    mOrderLines.map((item) => {
+    return mOrderLines.map((item) => {
+      console.log(item.image);
       return (
-        <td>
-          <tr>{item.image}</tr>
-          <tr>{item.name}</tr>
-          <tr>{item.price}</tr>
-        </td>
+        <tr>
+          <td>{item.name}</td>
+          <td>{item.qty}</td>
+          <td>{item.price}</td>
+          <td>
+            <Link
+              type="button"
+              class="btn btn-danger"
+              onClick={() => dispatch(shopActions.removeOrder(item))}
+            >
+              <i class="fa fa-trash"></i>
+            </Link>
+          </td>
+        </tr>
       );
     });
   };
@@ -40,7 +49,7 @@ export default (props) => {
     return (
       <>
         <div className="row">
-          <h4>Tax</h4>
+          <h4>Tax 7% </h4>
           <NumberFormat
             value={shopReducer.mTaxAmt}
             displayType={"text"}
@@ -60,13 +69,13 @@ export default (props) => {
             prefix={"฿"}
           />
           {shopReducer.mTotalPrice > 0 && !shopReducer.mIsPaymentMade && (
-            <a
-              href="#"
-              class="btn btn-primary btn-block"
+            <Link
+              type="button"
+              class="btn btn-primary"
               onClick={() => dispatch(shopActions.togglePaymentState())}
             >
-              Payment
-            </a>
+              <i class="fa fa-cart-plus"></i> Payment
+            </Link>
           )}
           {shopReducer.mOrderLines.length > 0 ? (
             <table class="table table-hover shopping-cart-wrap">
@@ -87,16 +96,11 @@ export default (props) => {
               <tbody>{renderOrder()}</tbody>
             </table>
           ) : (
-            <img src={cashier} style={{ height: 300, width: 300 }} />
+            <img src={cashier} style={{ width: 200 }} />
           )}
         </div>
       </>
     );
-  };
-  const addToCart = (e, item) => {
-    // function upvote
-    e.preventDefault();
-    return dispatch(shopActions.addOrder(item));
   };
   const renderProductRows = () => {
     if (productReducer.result) {
@@ -125,7 +129,9 @@ export default (props) => {
                         <p className="card-text">Price {item.price}</p>
                         <p className="card-text">
                           <small className="text-muted">
-                            remain {item.stock}
+                            remain{" "}
+                            {item.qty ? item.stock - item.qty : item.stock}{" "}
+                            items
                           </small>
                           {isSelectedItem(item) && (
                             <div
@@ -134,17 +140,19 @@ export default (props) => {
                                 flexDirection: "row",
                               }}
                             >
-                              <small className="text-muted">X{item.qty}</small>
+                              <small className="text-muted">
+                                X {item.qty} items
+                              </small>
                             </div>
                           )}
                         </p>
-                        <a
-                          href="//#region "
-                          onClick={(e, item) => addToCart(e, item)}
-                          class="btn btn-primary btn-block "
+                        <Link
+                          type="button"
+                          class="btn btn-primary"
+                          onClick={() => dispatch(shopActions.addOrder(item))}
                         >
-                          Add to Card
-                        </a>
+                          <i class="fa fa-cart-plus"></i> Add to Cart
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -186,7 +194,9 @@ export default (props) => {
               data-target=".navbar"
               data-offset="50"
             >
-              {renderProductRows()}
+              {shopReducer.mIsPaymentMade
+                ? renderPayment()
+                : renderProductRows()}
             </div>
             <div className="col-3">{CartSection()}</div>
           </div>

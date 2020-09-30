@@ -4,25 +4,30 @@ import { TransactionRequest } from "./transaction";
 import * as shopActions from "../../actions/shop.action";
 import { makeStyles } from "@material-ui/core/styles";
 import { Formik, Form, Field } from "formik";
-import { TextField } from "formik-material-ui";
-import Grid from "@material-ui/core/Grid";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Button from "@material-ui/core/Button";
 
 export default (props) => {
   const shopReducer = useSelector(({ shopReducer }) => shopReducer);
   const dispatch = useDispatch();
 
   const useStyles = makeStyles((theme) => ({
-    root: {
-      padding: 30,
+    navbar_inner: { borderRadius: "0 0 0 0" },
+    calculator_wrapper: { fontSize: "42px" },
+    calculator_wrapper__uneditable_input: {
+      height: "42px",
+      fontSize: "42px",
+      lineHeight: "35px",
+      width: "100%",
     },
-    button: {
-      height: 100,
-      fontSize: 20,
-    },
-    field: {
-      marginTop: 16,
+    calculator_wrapper__span1: { height: "42px", fontSize: "42px" },
+    calculator_wrapper__span1__visible_phone: { lineHeight: "25px" },
+    calculator_wrapper__span1__hidden_phone: { lineHeight: "42px" },
+    btn: {
+      width: "10%",
+      height: "50px",
+      margin: "0 5px 5px 0",
+      lineHeight: "50px",
+      fontWeight: "bold",
+      fontSize: "25px",
     },
   }));
 
@@ -71,155 +76,101 @@ export default (props) => {
 
   const showForm = ({ values, setFieldValue }) => {
     return (
-      <Form>
-        {isMustChanged(values) && (
-          <Field
-            variant="outlined"
-            className={classes.field}
-            fullWidth
-            InputLabelProps={{
-              shrink: true,
-            }}
-            component={TextField}
-            name="change"
-            type="text"
-            label="Change"
-            InputProps={{
-              style: { fontSize: 35 },
-              readOnly: true,
-              startAdornment: (
-                <InputAdornment position="start">THB</InputAdornment>
-              ),
-            }}
-          />
-        )}
-
-        <Field
-          readonly
-          variant="outlined"
-          className={classes.field}
-          fullWidth
-          component={TextField}
-          name="given"
-          type="text"
-          label="Given"
-          InputProps={{
-            style: { fontSize: 35, color: "green" },
-            readOnly: true,
-            startAdornment: (
-              <InputAdornment position="start">THB</InputAdornment>
-            ),
-          }}
-        />
-
-        <div style={{ marginTop: 32 }}>
-          <Grid container justify="space-between" spacing={2}>
-            <Grid item xs>
-              <Button
-                className={classes.button}
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={() => onClickGiven(1000, values.given, setFieldValue)}
+      <div className="row-fluid">
+        <div className="span6 well">
+          <div id="calc-board">
+            <div className="row-fluid">
+              <a href="#" className="btn" data-constant="SIN" data-key={115}>
+                sin
+              </a>
+              <a href="#" className="btn" data-constant="COS" data-key={99}>
+                cos
+              </a>
+              <a href="#" className="btn" data-constant="MOD" data-key={109}>
+                md
+              </a>
+              <a
+                href="#"
+                className="btn btn-danger"
+                data-method="reset"
+                data-key={8}
               >
-                ฿1,000
-              </Button>
-            </Grid>
-            <Grid item xs>
-              <Button
-                className={classes.button}
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={() => onClickGiven(500, values.given, setFieldValue)}
+                C
+              </a>
+            </div>
+            <div className="row-fluid">
+              <a href="#" className="btn" data-key={55}>
+                7
+              </a>
+              <a href="#" className="btn" data-key={56}>
+                8
+              </a>
+              <a href="#" className="btn" data-key={57}>
+                9
+              </a>
+              <a href="#" className="btn" data-constant="BRO" data-key={40}>
+                (
+              </a>
+              <a href="#" className="btn" data-constant="BRC" data-key={41}>
+                )
+              </a>
+            </div>
+            <div className="row-fluid">
+              <a href="#" className="btn" data-key={52}>
+                4
+              </a>
+              <a href="#" className="btn" data-key={53}>
+                5
+              </a>
+              <a href="#" className="btn" data-key={54}>
+                6
+              </a>
+              <a href="#" className="btn" data-constant="MIN" data-key={45}>
+                -
+              </a>
+              <a href="#" className="btn" data-constant="SUM" data-key={43}>
+                +
+              </a>
+            </div>
+            <div className="row-fluid">
+              <a href="#" className="btn" data-key={49}>
+                1
+              </a>
+              <a href="#" className="btn" data-key={50}>
+                2
+              </a>
+              <a href="#" className="btn" data-key={51}>
+                3
+              </a>
+              <a href="#" className="btn" data-constant="DIV" data-key={47}>
+                /
+              </a>
+              <a href="#" className="btn" data-constant="MULT" data-key={42}>
+                *
+              </a>
+            </div>
+            <div className="row-fluid">
+              <a href="#" className="btn" data-key={46}>
+                .
+              </a>
+              <a href="#" className="btn" data-key={48}>
+                0
+              </a>
+              <a href="#" className="btn" data-constant="PROC" data-key={37}>
+                %
+              </a>
+              <a
+                href="#"
+                className="btn btn-primary"
+                data-method="calculate"
+                data-key={61}
               >
-                ฿500
-              </Button>
-            </Grid>
-            <Grid item xs>
-              <Button
-                className={classes.button}
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={() => onClickGiven(100, values.given, setFieldValue)}
-              >
-                ฿100
-              </Button>
-            </Grid>
-          </Grid>
-          <Grid container justify="space-between" spacing={2}>
-            <Grid item xs>
-              <Button
-                className={classes.button}
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={() => onClickGiven(50, values.given, setFieldValue)}
-              >
-                ฿50
-              </Button>
-            </Grid>
-            <Grid item xs>
-              <Button
-                className={classes.button}
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={() => onClickGiven(20, values.given, setFieldValue)}
-              >
-                ฿20
-              </Button>
-            </Grid>
-            <Grid item xs>
-              <Button
-                className={classes.button}
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={() => onClickGiven(10, values.given, setFieldValue)}
-              >
-                ฿10
-              </Button>
-            </Grid>
-          </Grid>
-          <Grid container justify="space-between" spacing={2}>
-            <Grid item xs>
-              <Button
-                className={classes.button}
-                fullWidth
-                variant="contained"
-                color="danger"
-                onClick={() => setFieldValue("given", 0)}
-              >
-                CLR
-              </Button>
-            </Grid>
-            <Grid item xs>
-              <Button
-                className={classes.button}
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={() => onClickExact(setFieldValue)}
-              >
-                EXACT
-              </Button>
-            </Grid>
-            <Grid item xs>
-              <Button
-                className={classes.button}
-                fullWidth
-                variant="outlined"
-                color="primary"
-                onClick={() => onClickSubmit(values)}
-              >
-                Submit
-              </Button>
-            </Grid>
-          </Grid>
+                =
+              </a>
+            </div>
+          </div>
         </div>
-      </Form>
+      </div>
     );
   };
 
