@@ -1,37 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TransactionRequest } from "./transaction";
 import * as shopActions from "../../actions/shop.action";
-import { makeStyles } from "@material-ui/core/styles";
 import { Formik, Form, Field } from "formik";
 
 export default (props) => {
   const shopReducer = useSelector(({ shopReducer }) => shopReducer);
   const dispatch = useDispatch();
+  const [staff_id, setStaff_id] = useState();
+  useEffect(() => {
+    getcurrentRole();
+  }, []);
+  const getcurrentRole = () => {
+    let token = localStorage.getItem("token");
+    var base64Url = token.split(".")[1];
+    var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    var jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map(function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("")
+    );
 
-  const useStyles = makeStyles((theme) => ({
-    navbar_inner: { borderRadius: "0 0 0 0" },
-    calculator_wrapper: { fontSize: "42px" },
-    calculator_wrapper__uneditable_input: {
-      height: "42px",
-      fontSize: "42px",
-      lineHeight: "35px",
-      width: "100%",
-    },
-    calculator_wrapper__span1: { height: "42px", fontSize: "42px" },
-    calculator_wrapper__span1__visible_phone: { lineHeight: "25px" },
-    calculator_wrapper__span1__hidden_phone: { lineHeight: "42px" },
-    btn: {
-      width: "10%",
-      height: "50px",
-      margin: "0 5px 5px 0",
-      lineHeight: "50px",
-      fontWeight: "bold",
-      fontSize: "25px",
-    },
-  }));
-
-  const classes = useStyles();
+    let { id } = JSON.parse(jsonPayload);
+    console.log(id);
+    setStaff_id(id);
+  };
 
   const isMustChanged = (values) => {
     try {
@@ -52,6 +48,7 @@ export default (props) => {
 
   const onClickGiven = (newValue, oldValue, setFieldValue) => {
     const newGiven = newValue + oldValue;
+    console.log(newValue);
     setFieldValue("given", newGiven);
     updateChange(newGiven, setFieldValue);
   };
@@ -68,106 +65,135 @@ export default (props) => {
     trans.change = values.change;
     trans.payment_type = "cash";
     trans.payment_detail = "full";
-    trans.seller_id = "sr0001";
-    trans.buyer_id = "by0000";
+    trans.staff_id = staff_id;
     trans.order_list = props.order;
     dispatch(shopActions.submitPayment(trans));
   };
 
   const showForm = ({ values, setFieldValue }) => {
     return (
-      <div className="row-fluid">
-        <div className="span6 well">
-          <div id="calc-board">
-            <div className="row-fluid">
-              <a href="#" className="btn" data-constant="SIN" data-key={115}>
-                sin
-              </a>
-              <a href="#" className="btn" data-constant="COS" data-key={99}>
-                cos
-              </a>
-              <a href="#" className="btn" data-constant="MOD" data-key={109}>
-                md
-              </a>
-              <a
-                href="#"
-                className="btn btn-danger"
-                data-method="reset"
-                data-key={8}
-              >
-                C
-              </a>
+      <div>
+        <div className="row">
+          <div className="col">
+            {isMustChanged(values) && (
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    Change
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  readonly="readonly"
+                  name="change"
+                  value={values.change}
+                  className="form-control"
+                  placeholder="Change"
+                />
+              </div>
+            )}
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">
+                  Given
+                </span>
+              </div>
+              <input
+                type="text"
+                readonly="readonly"
+                name="given"
+                value={values.given}
+                className="form-control"
+                placeholder="Given"
+              />
             </div>
-            <div className="row-fluid">
-              <a href="#" className="btn" data-key={55}>
-                7
-              </a>
-              <a href="#" className="btn" data-key={56}>
-                8
-              </a>
-              <a href="#" className="btn" data-key={57}>
-                9
-              </a>
-              <a href="#" className="btn" data-constant="BRO" data-key={40}>
-                (
-              </a>
-              <a href="#" className="btn" data-constant="BRC" data-key={41}>
-                )
-              </a>
-            </div>
-            <div className="row-fluid">
-              <a href="#" className="btn" data-key={52}>
-                4
-              </a>
-              <a href="#" className="btn" data-key={53}>
-                5
-              </a>
-              <a href="#" className="btn" data-key={54}>
-                6
-              </a>
-              <a href="#" className="btn" data-constant="MIN" data-key={45}>
-                -
-              </a>
-              <a href="#" className="btn" data-constant="SUM" data-key={43}>
-                +
-              </a>
-            </div>
-            <div className="row-fluid">
-              <a href="#" className="btn" data-key={49}>
-                1
-              </a>
-              <a href="#" className="btn" data-key={50}>
-                2
-              </a>
-              <a href="#" className="btn" data-key={51}>
-                3
-              </a>
-              <a href="#" className="btn" data-constant="DIV" data-key={47}>
-                /
-              </a>
-              <a href="#" className="btn" data-constant="MULT" data-key={42}>
-                *
-              </a>
-            </div>
-            <div className="row-fluid">
-              <a href="#" className="btn" data-key={46}>
-                .
-              </a>
-              <a href="#" className="btn" data-key={48}>
-                0
-              </a>
-              <a href="#" className="btn" data-constant="PROC" data-key={37}>
-                %
-              </a>
-              <a
-                href="#"
-                className="btn btn-primary"
-                data-method="calculate"
-                data-key={61}
-              >
-                =
-              </a>
-            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <button
+              onClick={() => onClickGiven(1000, values.given, setFieldValue)}
+              className="btn btn-primary btn-lg btn-block"
+              type="button"
+            >
+              1000
+            </button>
+          </div>
+          <div className="col">
+            <button
+              onClick={() => onClickGiven(500, values.given, setFieldValue)}
+              className="btn btn-primary btn-lg btn-block"
+              type="button"
+            >
+              500
+            </button>
+          </div>
+          <div className="col">
+            <button
+              onClick={() => onClickGiven(100, values.given, setFieldValue)}
+              className="btn btn-primary btn-lg btn-block"
+              type="button"
+            >
+              100
+            </button>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <button
+              onClick={() => onClickGiven(50, values.given, setFieldValue)}
+              className="btn btn-primary btn-lg btn-block"
+              type="button"
+            >
+              50
+            </button>
+          </div>
+          <div className="col">
+            <button
+              onClick={() => onClickGiven(20, values.given, setFieldValue)}
+              className="btn btn-primary btn-lg btn-block"
+              type="button"
+            >
+              20
+            </button>
+          </div>
+          <div className="col">
+            <button
+              onClick={() => onClickGiven(10, values.given, setFieldValue)}
+              className="btn btn-primary btn-lg btn-block"
+              type="button"
+            >
+              10
+            </button>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <button
+              onClick={() => setFieldValue("given", 0)}
+              className="btn btn-danger btn-lg btn-block"
+              type="button"
+            >
+              Clear
+            </button>
+          </div>
+          <div className="col">
+            <button
+              onClick={() => onClickExact(setFieldValue)}
+              className="btn btn-primary btn-lg btn-block"
+              type="button"
+            >
+              Exact
+            </button>
+          </div>
+          <div className="col">
+            <button
+              onClick={() => onClickSubmit(values)}
+              className="btn btn-success btn-lg btn-block"
+              type="button"
+            >
+              Submit
+            </button>
           </div>
         </div>
       </div>
@@ -175,7 +201,7 @@ export default (props) => {
   };
 
   return (
-    <div className={classes.root}>
+    <div>
       <Formik initialValues={{ given: 0 }}>{(props) => showForm(props)}</Formik>
     </div>
   );

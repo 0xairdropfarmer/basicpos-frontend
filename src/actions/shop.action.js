@@ -1,5 +1,5 @@
 import { httpClient } from "./../utils/HttpClient";
-
+import swal from "sweetalert";
 import { SHOP_UPDATE_ORDER, SHOP_UPDATE_PAYMENT, server } from "../constants";
 
 const setStateShoptoUpdateOrder = (payload) => ({
@@ -58,8 +58,12 @@ export const removeOrder = (product) => {
 
 export const submitPayment = (data) => {
   return (dispatch, getState) => {
-    httpClient.post(server.TRANSACTION_URL, data).then(() => {
-      // Clear payment
+    httpClient.post(server.ORDER_URL, data).then(() => {
+      swal({
+        title: "Your are made sale success",
+        icon: "success",
+        buttons: true,
+      });
       getState().shopReducer.mOrderLines = [];
       dispatch({
         type: SHOP_UPDATE_PAYMENT,

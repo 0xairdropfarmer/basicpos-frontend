@@ -6,7 +6,21 @@ const setStateShoptoUpdateOrder = (payload) => ({
   type: SHOP_UPDATE_ORDER,
   payload: payload,
 });
-
+export const Index = () => {
+  return async (dispatch) => {
+    dispatch(setProductStateToFetching());
+    const response = await httpClient.get(
+      process.env.REACT_APP_API_URL + "order"
+    );
+    if (response.data.result == "success") {
+      // console.log(response.data);
+      dispatch(setProductStateToSuccess(response.data.data));
+    } else if (response.data.result === "error") {
+      dispatch(setProductStateToFailed());
+      swal("Error!", response.data.message, "error");
+    }
+  };
+};
 const doUpdateOrder = (dispatch, orderLines) => {
   debugger;
   let totalPrice = 0;

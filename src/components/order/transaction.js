@@ -10,7 +10,5 @@ export class TransactionRequest {
   payment_type = "x";
   payment_detail = "x";
   staff_id = "x";
-  seller_id = "x";
-  buyer_id = "x";
   comment = "x";
 }

@@ -49,36 +49,54 @@ export default (props) => {
     return (
       <>
         <div className="row">
-          <h4>Tax 7% </h4>
-          <NumberFormat
-            value={shopReducer.mTaxAmt}
-            displayType={"text"}
-            thousandSeparator={true}
-            decimalScale={2}
-            fixedDecimalScale={true}
-            prefix={"฿"}
-          />
+          <table class="table table-hover shopping-cart-wrap">
+            <thead class="text-muted">
+              <tr>
+                <th scope="col">Tax</th>
+                <th scope="col" width="120">
+                  Total
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <NumberFormat
+                    value={shopReducer.mTaxAmt}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    decimalScale={2}
+                    fixedDecimalScale={true}
+                    prefix={"฿"}
+                  />
+                </td>
+                <td>
+                  <NumberFormat
+                    value={shopReducer.mTotalPrice}
+                    displayType={"text"}
+                    decimalScale={2}
+                    thousandSeparator={true}
+                    prefix={"฿"}
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div className="row">
-          <h4>Total</h4>
-          <NumberFormat
-            value={shopReducer.mTotalPrice}
-            displayType={"text"}
-            decimalScale={2}
-            thousandSeparator={true}
-            prefix={"฿"}
-          />
           {shopReducer.mTotalPrice > 0 && !shopReducer.mIsPaymentMade && (
             <Link
               type="button"
-              class="btn btn-primary"
+              class="btn btn-success btn-block"
               onClick={() => dispatch(shopActions.togglePaymentState())}
             >
               <i class="fa fa-cart-plus"></i> Payment
             </Link>
           )}
+        </div>
+        <div className="row">
           {shopReducer.mOrderLines.length > 0 ? (
-            <table class="table table-hover shopping-cart-wrap">
+            <table class="table table-hover">
               <thead class="text-muted">
                 <tr>
                   <th scope="col">Item</th>
@@ -88,9 +106,7 @@ export default (props) => {
                   <th scope="col" width="120">
                     Price
                   </th>
-                  <th scope="col" class="text-right" width="200">
-                    Delete
-                  </th>
+                  <th scope="col" class="text-right"></th>
                 </tr>
               </thead>
               <tbody>{renderOrder()}</tbody>

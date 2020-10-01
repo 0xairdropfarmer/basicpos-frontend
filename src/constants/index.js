@@ -53,7 +53,7 @@ export const server = {
   REFRESH_TOKEN_URL: `refresh/token`,
   REGISTER_URL: `register`,
   PRODUCT_URL: `product`,
-  TRANSACTION_URL: `transaction`,
+  ORDER_URL: `order`,
   REPORT_URL: `report`,
   TOKEN_KEY: `token`,
   REFRESH_TOKEN_KEY: `refresh_token`,
