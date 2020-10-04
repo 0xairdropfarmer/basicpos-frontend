@@ -1,5 +1,7 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was implement for tutorial on Soshace.com
+your can read full series on [Soshace blog](https://blog.soshace.com/author/krissanawat/)
 
+repo for backend [here](https://github.com/krissnawat/basicpos-backend)
 ## Available Scripts
 
 In the project directory, you can run:
