@@ -44,24 +44,7 @@ const Login = (props) => {
     }
   }, []);
 
-  // function submitForm(values, history) {
-  //   axios
-  //     .post(process.env.REACT_APP_API_URL + "login", values)
-  //     .then((res) => {
-  //       if (res.data.result === "success") {
-  //         localStorage.setItem("TOKEN_KEY", res.data.token);
-  //         swal("Success!", res.data.message, "success").then((value) => {
-  //           history.push("/dashboard");
-  //         });
-  //       } else if (res.data.result === "error") {
-  //         swal("Error!", res.data.message, "error");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       return swal("Error!", error.message, "error");
-  //     });
-  // }
+
   const showForm = ({
     values,
     errors,

@@ -22,11 +22,12 @@ export const setLoginStateToSuccess = (payload) => ({
 
 // Called by Login Component
 export const login = (value, history) => {
+  console.log(value);
   return async (dispatch) => {
     try {
       dispatch(setLoginStateToFetching()); // fetching
       let result = await httpClient.post(server.LOGIN_URL, value);
-      console.log(result);
+      
       if (result.data.result === "success") {
         const { token, refreshToken } = result.data;
         localStorage.setItem(server.TOKEN_KEY, token);
