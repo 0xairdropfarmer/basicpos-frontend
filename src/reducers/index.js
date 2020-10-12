@@ -9,6 +9,7 @@ import supplierReducer from "./supplier.reducer";
 import productReducer from "./product.reducer";
 import { reducer as sematable } from "sematable";
 import shopReducer from "./shop.reducer";
+import statReducer from "./stat.reducer";
 export default combineReducers({
   loginReducer,
   registerReducer,
@@ -20,4 +21,5 @@ export default combineReducers({
   productReducer,
   sematable,
   shopReducer,
+  statReducer,
 });

@@ -6,6 +6,10 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const REGISTER_FETCHING = "REGISTER_FETCHING";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAILED = "REGISTER_FAILED";
+// Stat
+export const STAT_FETCHING = "STAT_FETCHING";
+export const STAT_SUCCESS = "STAT_SUCCESS";
+export const STAT_FAILED = "STAT_FAILED";
 
 //Forgot password
 export const FORGOT_FETCHING = "FORGOT_FETCHING";
@@ -57,6 +61,7 @@ export const server = {
   REPORT_URL: `report`,
   TOKEN_KEY: `token`,
   REFRESH_TOKEN_KEY: `refresh_token`,
+  STAT_ENDPOINT: "stat",
 };
 
 export const Roles = [
