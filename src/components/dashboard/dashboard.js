@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
+import { Bar,Doughnut ,Line } from "react-chartjs-2";
 import { server } from "../../constants";
 import * as StatActions from "../../actions/stat.action";
 import { useSelector, useDispatch } from "react-redux";
@@ -52,6 +52,31 @@ export default (props) => {
       },
     ],
   };
+  const line_data = {
+    labels:  inventorystat.name,
+    datasets: [
+      {
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: 'rgba(75,192,192,0.4)',
+        borderColor: 'rgba(75,192,192,1)',
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: 'rgba(75,192,192,1)',
+        pointBackgroundColor: '#fff',
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+        pointHoverBorderColor: 'rgba(220,220,220,1)',
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: inventorystat.stock,
+      }
+    ]
+  };
   return (
     <div className="content-wrapper">
       {/* Content Header (Page header) */}
@@ -89,30 +114,8 @@ export default (props) => {
                 <div className="card-header">
                   <h3 className="card-title">
                     <i className="fas fa-chart-pie mr-1" />
-                    Sales
+                     Inventory Stock Status
                   </h3>
-                  <div className="card-tools">
-                    <ul className="nav nav-pills ml-auto">
-                      <li className="nav-item">
-                        <a
-                          className="nav-link active"
-                          href="#revenue-chart"
-                          data-toggle="tab"
-                        >
-                          Area
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          className="nav-link"
-                          href="#sales-chart"
-                          data-toggle="tab"
-                        >
-                          Donut
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
                 </div>
                 {/* /.card-header */}
                 <div className="card-body">
@@ -139,7 +142,67 @@ export default (props) => {
                       className="chart tab-pane"
                       id="sales-chart"
                       style={{ position: "relative", height: 300 }}
-                    ></div>
+                    >
+                       {statReducer.result && (
+                        <Doughnut
+                          redraw={true}
+                          data={data}
+                          width={400}
+                          height={200}
+                          options={{
+                            maintainAspectRatio: false,
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+                {/* /.card-body */}
+              </div>
+            </section>
+            {/* /.Left col */}
+                {/* Left col */}
+            <section className="col-lg-5 connectedSortable">
+              {/* Custom tabs (Charts with tabs)*/}
+              <div className="card">
+                <div className="card-header">
+                  <h3 className="card-title">
+                    <i className="fas fa-chart-pie mr-1" />
+                    Inventory Stock Status
+                  </h3>
+                  <div className="card-tools">
+                    </div>
+                </div>
+                {/* /.card-header */}
+                <div className="card-body">
+                  <div className="tab-content p-0">
+                    {/* Morris chart - Sales */}
+                    <div
+                      className="chart tab-pane active"
+                      id="revenue-chart"
+                      style={{ position: "relative", height: 300 }}
+                    >
+                      {statReducer.result && (
+                          <Line data={data} />
+                      )}
+                    </div>
+                    <div
+                      className="chart tab-pane"
+                      id="sales-chart"
+                      style={{ position: "relative", height: 300 }}
+                    >
+                       {statReducer.result && (
+                        <Doughnut
+                          redraw={true}
+                          data={data}
+                          width={400}
+                          height={200}
+                          options={{
+                            maintainAspectRatio: false,
+                          }}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
                 {/* /.card-body */}
@@ -147,6 +210,55 @@ export default (props) => {
             </section>
             {/* /.Left col */}
           </div>
+          <div className="row">
+  {/* Left col */}
+  <section className="col-lg-7 connectedSortable">
+              {/* Custom tabs (Charts with tabs)*/}
+              <div className="card">
+                <div className="card-header">
+                  <h3 className="card-title">
+                    <i className="fas fa-chart-pie mr-1" />
+                     Inventory Stock Status
+                  </h3>
+                  <div className="card-tools">
+                  
+                  </div>
+                </div>
+                {/* /.card-header */}
+                <div className="card-body">
+                  <div className="tab-content p-0">
+                    {/* Morris chart - Sales */}
+                    <div
+                      className="chart tab-pane active"
+                      id="revenue-chart"
+                      style={{ position: "relative", height: 300 }}
+                    >
+                      {statReducer.result && (
+                        <Doughnut
+                          redraw={true}
+                          data={data}
+                          width={400}
+                          height={200}
+                          options={{
+                            maintainAspectRatio: false,
+                          }}
+                        />
+                      )}
+                    </div>
+                    <div
+                      className="chart tab-pane"
+                      id="sales-chart"
+                      style={{ position: "relative", height: 300 }}
+                    >
+                      
+                    </div>
+                  </div>
+                </div>
+                {/* /.card-body */}
+              </div>
+            </section>
+            {/* /.Left col */}
+            </div>
           {/* /.row (main row) */}
         </div>
         {/* /.container-fluid */}
