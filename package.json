@@ -14,7 +14,7 @@
     "chart.js": "^2.9.3",
     "formik": "^2.1.5",
     "formik-material-ui": "^3.0.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "jspdf": "^2.1.0",
     "jspdf-autotable": "^3.5.9",
     "moment": "^2.27.0",
